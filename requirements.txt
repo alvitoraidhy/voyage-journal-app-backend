@@ -1,0 +1,4 @@
+fastapi==0.68.*
+uvicorn[standard]
+
+tortoise-orm[asyncpg]
