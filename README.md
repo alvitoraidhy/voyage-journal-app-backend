@@ -7,7 +7,7 @@
 ## **About the project**
 
 * This project is created as a warm-up before applying to Chingu Tier-3 Voyage 36. The web application consists of two repositories. This repository contains the back-end of the web application.
-* The web applications features a simple account-based note management system. The back-end handles the storage of the accounts and the notes, and the application logic of the application.
+* The web application features a simple account-based note management system. The back-end handles the storage of the accounts and the notes, and the application logic of the application.
 * The back-end side of the application heavily depends on the following packages:
     + FastAPI, as the web application framework
     + Tortoise ORM, as the database ORM
