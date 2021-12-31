@@ -1,6 +1,6 @@
 <!-- markdownlint-disable MD032 MD033-->
 
-# **alvitoraidhy/chingu-journal-app-backend**
+# **alvitoraidhy/voyage-journal-app-backend**
 
 ---
 
