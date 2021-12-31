@@ -1,8 +1,19 @@
 import os, logging
 
 
+TORTOISE_ORM = {
+    "connections": {"default": os.environ.get("DATABASE_URL", "postgres://postgres:postgres@localhost:5432/journal-app")},
+    "apps": {
+        "models": {
+            "models": ["models", "aerich.models"],
+            "default_connection": "default"
+        }
+    }
+}
+
+
 class BaseConfig:
-    DB_URL = os.environ["DATABASE_URL"]
+    DB_URL = os.environ.get("DATABASE_URL", "postgres://postgres:postgres@localhost:5432/journal-app")
 
 
 class DevelopmentConfig(BaseConfig):

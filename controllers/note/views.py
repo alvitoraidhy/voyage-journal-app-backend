@@ -16,16 +16,30 @@ router = APIRouter()
 
 @router.get("/", response_model=List[NoteOut])
 async def read_notes(user: User = Depends(active_user)):
-    return JSONResponse(user.notes, 200)
+    await user.fetch_related("notes")
+
+    response = [{
+        "id": note.id,
+        "title": note.title,
+        "body": note.body
+    } for note in user.notes]
+
+    return JSONResponse(response, 200)
 
 
 @router.post("/", response_model=NoteOut)
 async def create_note(form: NoteIn, user: User = Depends(active_user)):
-    note = Note(title=form.title, body=form.body)
+    note = Note(title=form.title, body=form.body, user_id=user.id)
 
-    await user.notes.add(note)
+    await note.save()
 
-    return JSONResponse(note, 201)
+    response = {
+        "id": note.id,
+        "title": note.title,
+        "body": note.body
+    }
+
+    return JSONResponse(response, 201)
 
 
 @router.get("/{note_id}", response_model=NoteOut)
@@ -34,8 +48,14 @@ async def read_note(note_id: int, user: User = Depends(active_user)):
 
     if note is None:
         raise HTTPException(404, "note not found or inaccessible")
+    
+    response = {
+        "id": note.id,
+        "title": note.title,
+        "body": note.body
+    }
 
-    return JSONResponse(note, 200)
+    return JSONResponse(response, 200)
 
 
 @router.put("/{note_id}", response_model=NoteOut)
@@ -50,7 +70,13 @@ async def update_note(note_id: int, form: NoteUpdateIn, user: User = Depends(act
 
     await note.save()
 
-    return JSONResponse(note, 200)
+    response = { 
+        "id": note.id,
+        "title": note.title,
+        "body": note.body
+    }
+
+    return JSONResponse(response, 200)
 
 
 @router.delete("/{note_id}")

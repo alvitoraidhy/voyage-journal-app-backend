@@ -1,1 +1,1 @@
-web: uvicorn --ws-ping-interval 5 --ws-ping-timeout 10 --host 0.0.0.0 --port $PORT main:app
+web: aerich upgrade && uvicorn --host 0.0.0.0 --port $PORT main:app

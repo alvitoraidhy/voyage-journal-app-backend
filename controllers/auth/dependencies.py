@@ -15,7 +15,7 @@ async def logged_in(authorization: str = Header(None)):
 
 
 async def active_user(user_session = Depends(logged_in)):
-    user: Union[User, None] = await User.get_or_none(user_session["username"]).prefetch_related()
+    user = await User.get_or_none(username=user_session["username"])
 
     if user is None:
         raise HTTPException(401, "invalid session")

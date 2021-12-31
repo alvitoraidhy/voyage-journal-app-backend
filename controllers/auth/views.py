@@ -1,12 +1,13 @@
 from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse, Response
-from fastapi import APIRouter, Header
+from fastapi import APIRouter, Header, Depends
 
 from models import User
+from .dependencies import active_user
 from .helpers import hash_password
 from .instances import session
 from .requests import LoginIn, RegisterIn
-from .responses import TokenOut
+from .responses import TokenOut, UserOut
 
 router = APIRouter()
 
@@ -26,7 +27,7 @@ async def login(form: LoginIn):
     return JSONResponse({"token": token}, 200)
 
 
-@router.post("/logout")
+@router.get("/logout")
 async def logout(authorization: str = Header(None)):
     session.delete_session(authorization)
 
@@ -45,3 +46,12 @@ async def register(form: RegisterIn):
     token = session.create_session({ "username": user.username })
 
     return JSONResponse({"token": token}, 200)
+
+
+@router.get("/current", response_model=UserOut)
+async def get_current_user(current_user: User = Depends(active_user)):
+    response = {
+        "username": current_user.username
+    }
+
+    return JSONResponse(response, 200)
