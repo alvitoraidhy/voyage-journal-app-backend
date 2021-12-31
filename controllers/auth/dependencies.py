@@ -14,10 +14,10 @@ async def logged_in(authorization: str = Header(None)):
     return user_session
 
 
-async def active_user(user_session = Depends(logged_in)):
+async def active_user(user_session=Depends(logged_in)):
     user = await User.get_or_none(username=user_session["username"])
 
     if user is None:
         raise HTTPException(401, "invalid session")
-    
+
     return user

@@ -20,10 +20,10 @@ class Session:
         self.data[token] = payload
 
         return token
-    
+
     def read_session(self, token: str):
         return self.data.get(token)
-    
+
     def update_session(self, token: str, payload: dict):
         if not token in self.data.keys():
             return False
@@ -35,7 +35,7 @@ class Session:
     def delete_session(self, token):
         if not token in self.data.keys():
             return False
-        
+
         self.data.pop(token)
 
         return True

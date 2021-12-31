@@ -15,4 +15,6 @@ class Note(Model):
     title = fields.CharField(max_length=255, null=False)
     body = fields.TextField()
 
-    user: fields.ForeignKeyRelation[User] = fields.ForeignKeyField("models.User", related_name="notes", on_delete=fields.CASCADE)
+    user: fields.ForeignKeyRelation[User] = fields.ForeignKeyField(
+        "models.User", related_name="notes", on_delete=fields.CASCADE
+    )

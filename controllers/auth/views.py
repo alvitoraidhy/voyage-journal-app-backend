@@ -17,12 +17,14 @@ router = APIRouter()
 
 @router.post("/login", response_model=TokenOut)
 async def login(form: LoginIn):
-    user = await User.get_or_none(username=form.username, password=hash_password(form.password))
+    user = await User.get_or_none(
+        username=form.username, password=hash_password(form.password)
+    )
 
     if user is None:
         raise HTTPException(400, "wrong username or password")
-    
-    token = session.create_session({ "username": user.username })
+
+    token = session.create_session({"username": user.username})
 
     return JSONResponse({"token": token}, 200)
 
@@ -36,22 +38,22 @@ async def logout(authorization: str = Header(None)):
 
 @router.post("/register", response_model=TokenOut)
 async def register(form: RegisterIn):
-    if await User.get_or_none(username=form.username, password=hash_password(form.password)):
+    if await User.get_or_none(
+        username=form.username, password=hash_password(form.password)
+    ):
         raise HTTPException(409, "a user with the same username already exists")
 
     user = User(username=form.username, password=hash_password(form.password))
 
     await user.save()
-    
-    token = session.create_session({ "username": user.username })
+
+    token = session.create_session({"username": user.username})
 
     return JSONResponse({"token": token}, 200)
 
 
 @router.get("/current", response_model=UserOut)
 async def get_current_user(current_user: User = Depends(active_user)):
-    response = {
-        "username": current_user.username
-    }
+    response = {"username": current_user.username}
 
     return JSONResponse(response, 200)
