@@ -1,1 +1,2 @@
-web: aerich upgrade && uvicorn --host 0.0.0.0 --port $PORT main:app
+release: aerich upgrade
+web: uvicorn --host 0.0.0.0 --port $PORT main:app
